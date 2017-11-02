@@ -1,0 +1,9 @@
+eclipse.preferences.version=1
+encoding//src/main/webapp/WEB-INF/views/accountmanage.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/addaccount.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/adddepartment.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/addjurisdiction.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/departmentmanage.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/index.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/jurisdictionmanage.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/rolemanage.jsp=UTF-8

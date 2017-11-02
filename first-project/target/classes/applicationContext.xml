@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <context:component-scan base-package="com.shixun.online"></context:component-scan>
+    <!-- 
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"> 
+        <property name="configLocation" value="classpath:hibernate.cfg.xml"></property> 
+    </bean> -->
+    
+    <!-- 加载properties文件 -->
+    <context:property-placeholder location="classpath:db.properties"/>
+    <!-- 配置连接池 -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${jdbc.driverClass}" />
+        <property name="jdbcUrl" value="${jdbc.url}" />
+        <property name="user" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+    </bean>
+    
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"> 
+        <!-- 数据库连接：加载连接池 -->
+        <property name="dataSource" ref="dataSource" />
+        
+        <!-- Hibernate 配置 -->
+        <property name="hibernateProperties">
+            <!-- 以下属性在书写时不能省略hibernate
+            <props>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.format_sql">true</prop>
+			</props> -->
+            <!-- 上述的配置可以简写成以下 -->
+            <value>
+                hibernate.show_sql=true
+                hibernate.dialect=org.hibernate.dialect.MySQLDialect
+                hibernate.hbm2ddl.auto=update
+                hibernate.format_sql=true
+            </value>
+        </property>
+        
+        <!-- 加载hibernate的Xxx.hbm.xml配置文件
+        <property name="mappingResources">
+            <list>
+                <value>com/qingshixun/model/User.hbm.xml</value>
+            </list>
+        </property>
+        <property name="mappingLocations">
+			<list>
+				<value>classpath:com/qingshixun/model/User.hbm.xml</value>
+			</list>
+		</property>
+		<property name="mappingDirectoryLocations">
+			<list>
+				<value>classpath:com/qingshixun/model</value>
+			</list>
+		</property> -->
+		<!-- 加载注解类 -->
+        <property name="packagesToScan">
+            <list>
+                <value>com.shixun.online.model</value>
+            </list>
+        </property>
+    </bean>
+    <!-- 
+    <bean id="userDao" class="com.qingshixun.dao.UserDao">
+          <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <bean id="userService" class="com.qingshixun.service.UserService">
+        <property name="userDao" ref="userDao"></property>
+    </bean> -->
+    <!-- 
+    <bean id="helloAction" class="com.qingshixun.action.HelloworldAction">
+    
+    </bean> -->
+    
+    <!-- 配置事务管理器 -->
+	<bean id="txManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<!-- 开启使用事务的注解，在方法或类上增加 @Transactional 即可 -->
+	<tx:annotation-driven transaction-manager="txManager" />
+	
+</beans>
